@@ -1,0 +1,16 @@
+import AppError from "../errorHandlers/appError.js";
+
+const restrictTo = (...roles) => {
+  return (req, res, next) => {
+    // if (!roles.includes(req.user.role)) {
+    if (!roles.some((role) => req.user.role.includes(role))) {
+      return next(
+        new AppError("You do not have permission to perform this action", 403)
+      );
+    }
+
+    next();
+  };
+};
+
+export default restrictTo;
